@@ -30,9 +30,14 @@ final class TrackersViewController: UIViewController {
     var completedEvents: Set<IrregularEventRecord> = []
     var dayCounter = 0
     
-    private var datePicker: UIDatePicker?
-    private var datePickerView: UIView?
     private var addButtonView: UIView?
+    
+    private let datePicker: UIDatePicker = {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.preferredDatePickerStyle = .compact
+        return picker
+    }()
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -121,7 +126,11 @@ final class TrackersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let dateSelectorButton = UIBarButtonItem(customView: datePicker)
+        navigationController?.navigationBar.topItem?.setRightBarButton(dateSelectorButton, animated: true)
         constraintsForTrackerView()
+        datePicker.addTarget(self, action: #selector(datePickerValueDidChanged), for: .valueChanged)
     }
     
     @objc func addTracker() {
@@ -149,6 +158,7 @@ final class TrackersViewController: UIViewController {
         addButtonView?.translatesAutoresizingMaskIntoConstraints = false
         addButtonView?.addSubview(addButton)
         guard let addButtonView = addButtonView else { return nil }
+        
         NSLayoutConstraint.activate([
             addButton.topAnchor.constraint(equalTo: addButtonView.topAnchor),
             addButton.leadingAnchor.constraint(equalTo: addButtonView.leadingAnchor),
@@ -159,43 +169,16 @@ final class TrackersViewController: UIViewController {
         return buttonItem
     }
     
-    private func configureDatePicker() -> UIBarButtonItem? {
-        let datePicker = UIDatePicker()
-        datePicker.datePickerMode = .date
-        datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.preferredDatePickerStyle = .compact
-        datePicker.addTarget(self, action: #selector(datePickerValueDidChanged), for: .valueChanged)
-        self.datePicker = datePicker
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 77, height: 34))
-        datePickerView = view
-        guard let datePickerView = datePickerView else { return nil }
-        datePickerView.translatesAutoresizingMaskIntoConstraints = false
-        datePickerView.addSubview(datePicker)
-        NSLayoutConstraint.activate([
-            datePicker.topAnchor.constraint(equalTo: datePickerView.topAnchor),
-            datePicker.leadingAnchor.constraint(equalTo: datePickerView.leadingAnchor),
-            datePicker.trailingAnchor.constraint(equalTo: datePickerView.trailingAnchor),
-            datePicker.bottomAnchor.constraint(equalTo: datePickerView.bottomAnchor),
-        ])
-        
-        let dateItem = UIBarButtonItem(customView: datePickerView)
-        return dateItem
-    }
-    
     private func constraintsForTrackerView() {
         view.backgroundColor = .white
         searchBar.delegate = self
         
         let buttonItem = configureAddButton()
-        let dateItem = configureDatePicker()
         
         navigationItem.leftBarButtonItem = buttonItem
-        navigationItem.rightBarButtonItem = dateItem
         
-        guard let datePickerView = datePickerView,
-              let addButtonView = addButtonView else { return }
+        guard let addButtonView = addButtonView else { return }
         
-        view.addSubview(datePickerView)
         view.addSubview(addButtonView)
         view.addSubview(collectionView)
         view.addSubview(placeholderImage)
@@ -206,11 +189,6 @@ final class TrackersViewController: UIViewController {
         view.addSubview(errorLabel)
         
         NSLayoutConstraint.activate([
-            
-            datePickerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 91),
-            datePickerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 282),
-            datePickerView.heightAnchor.constraint(equalToConstant: 34),
-            datePickerView.widthAnchor.constraint(equalToConstant: 77),
             
             addButtonView.topAnchor.constraint(equalTo: view.topAnchor, constant: 57),
             addButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
@@ -239,8 +217,8 @@ final class TrackersViewController: UIViewController {
             placeholderLabel.heightAnchor.constraint(equalToConstant: 18),
             
             searchBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 136),
-            searchBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            searchBar.widthAnchor.constraint(equalToConstant: 343),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             searchBar.heightAnchor.constraint(equalToConstant: 36),
             
             errorImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -422,7 +400,6 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
         let width = (collectionView.bounds.width - 41) / 2
         let height = width * 0.8
         return CGSize(width: width, height: height)
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -437,6 +414,7 @@ extension TrackersViewController: UISearchTextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         addDoneButtonToKeyboard()
     }
+    
     func textFieldDidChangeSelection(_ textField: UITextField) {
         guard let searchText = textField.text else { return }
         
@@ -459,6 +437,7 @@ extension TrackersViewController: UISearchTextFieldDelegate {
                     return TrackerCategory(categoryName: category.categoryName, trackers: searchedTrackers)
                 }
             }
+            
             visibleTrackersCategory = searchedTrackersCategory
             
             var hasMatchingEvents = false
@@ -473,6 +452,7 @@ extension TrackersViewController: UISearchTextFieldDelegate {
                     return IrregularEventCategory(categoryName: category.categoryName, irregularEvents: searchedEvents)
                 }
             }
+            
             visibleIrregularCategories = searchedEventsCategory
             
             if !hasMatchingTrackers && !hasMatchingEvents {
@@ -500,6 +480,7 @@ extension TrackersViewController: NewTrackerDelegate {
             trackersCategory.append(updateCategory)
             trackers.append(newTracker)
         }
+        
         configureCollectionView()
         collectionView.reloadData()
         updateTrackers()

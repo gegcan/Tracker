@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EmojiSupplementaryView: UICollectionReusableView {
+final class EmojiSupplementaryView: UICollectionReusableView {
     let titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = UIFont.systemFont(ofSize: 19, weight: .bold)

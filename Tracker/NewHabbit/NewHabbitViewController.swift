@@ -169,14 +169,13 @@ final class NewHabbitViewController: UIViewController {
         layout.minimumInteritemSpacing = 25
         layout.minimumLineSpacing = 14
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 9, bottom: 0, right: 9)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(EmojiCell.self, forCellWithReuseIdentifier: EmojiCell.identifier)
         collectionView.register(EmojiSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: EmojiSupplementaryView.identifier)
         collectionView.backgroundColor = .clear
         collectionView.isScrollEnabled = false
         return collectionView
-        
     }()
     
     lazy var colorCollectionView: UICollectionView = {
@@ -206,7 +205,6 @@ final class NewHabbitViewController: UIViewController {
         setupView()
         
     }
-    
     
     @objc func cancelButtonTapped() {
         self.dismiss(animated: true)
@@ -395,6 +393,7 @@ extension NewHabbitViewController: UICollectionViewDelegateFlowLayout {
                 fatalError("Unable to dequeue EmojiCell")
             }
             return emojiCell.calculateEmojiCell(collectionView: emojiCollectionView)
+            
         } else {
             guard let colorCell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCell.identifier, for: indexPath) as? ColorCell else {
                 fatalError("Unable to dequeue ColorCell")
@@ -525,12 +524,12 @@ extension NewHabbitViewController {
             
             emojiCollectionView.topAnchor.constraint(equalTo: centralTableView.bottomAnchor, constant: 32),
             emojiCollectionView.centerXAnchor.constraint(equalTo: centralTableView.centerXAnchor),
-            emojiCollectionView.heightAnchor.constraint(equalToConstant: 220),
+            emojiCollectionView.heightAnchor.constraint(equalToConstant: 250),
             emojiCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
             colorCollectionView.topAnchor.constraint(equalTo: emojiCollectionView.bottomAnchor, constant: 47),
             colorCollectionView.centerXAnchor.constraint(equalTo: emojiCollectionView.centerXAnchor),
-            colorCollectionView.heightAnchor.constraint(equalToConstant: 220),
+            colorCollectionView.heightAnchor.constraint(equalToConstant: 250),
             colorCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
             lowStackView.topAnchor.constraint(equalTo: colorCollectionView.bottomAnchor, constant: 46),

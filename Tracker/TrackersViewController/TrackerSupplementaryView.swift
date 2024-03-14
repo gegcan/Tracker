@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TrackerSupplementaryView: UICollectionReusableView {
+final class TrackerSupplementaryView: UICollectionReusableView {
     
     static let identifier = "header"
     
@@ -16,7 +16,7 @@ class TrackerSupplementaryView: UICollectionReusableView {
         label.backgroundColor = .white
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.textColor = UIColor(red: 0.102, green: 0.106, blue: 0.133, alpha: 1)
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

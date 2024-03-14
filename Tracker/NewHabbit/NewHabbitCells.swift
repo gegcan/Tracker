@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewHabbitCell: UITableViewCell {
+final class NewHabbitCell: UITableViewCell {
     
     static let identifier = "NewHabbitCell"
     
