@@ -10,13 +10,13 @@ import Foundation
 // MARK: - Structures for FRC delegates
 
 struct TrackerStoreUpdate {
-  let insertedIndexes: [IndexPath]
-  let deletedIndexes: [IndexPath]
-  let updatedIndexes: [IndexPath]
+    let insertedIndexes: [IndexPath]
+    let deletedIndexes: [IndexPath]
+    let updatedIndexes: [IndexPath]
 }
 
 struct TrackerCategoryStoreUpdate {
-  let insertedSectionIndexes: IndexSet
-  let deletedSectionIndexes: IndexSet
-  let updatedSectionIndexes: IndexSet
+    let insertedSectionIndexes: IndexSet
+    let deletedSectionIndexes: IndexSet
+    let updatedSectionIndexes: IndexSet
 }
