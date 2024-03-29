@@ -5,14 +5,25 @@
 //  Created by Александр Гегешидзе on 25.02.2024.
 //
 
-import UIKit
+import Foundation
 
-// сущность для хранения информации про трекер
-struct Tracker {
-    let id: UUID
-    let name: String
-    let schedule: [WeekDay]
-    let color: UIColor
-    let emoji: String
-    let dayCounter: Int
+struct Tracker: Hashable {
+  let id: UUID
+  let title: String
+  let emoji: Int
+  let color: Int
+  let schedule: [Bool]
+}
+
+struct TrackerCategory: Hashable {
+  let id: UUID
+  let name: String
+  let items: [Tracker]
+}
+
+struct TrackerRecord: Hashable {
+  let id: UUID
+  let tracker: Tracker
+  let dates: [Date]
+  let days: Int
 }
