@@ -2,7 +2,7 @@
 //  TrackerStoreUpdate.swift
 //  Tracker
 //
-//  Created by Александр Гегешидзе on 27.03.2024.
+//  Created by Александр Гегешидзе on 07.04.2024.
 //
 
 import Foundation

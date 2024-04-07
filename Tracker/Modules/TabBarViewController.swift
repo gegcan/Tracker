@@ -14,8 +14,10 @@ final class TabBarViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypWhite
         setupTabBarView()
         setupTabBarViewController()
+        setupBorder()
     }
 }
 
@@ -27,13 +29,9 @@ private extension TabBarViewController {
         tabBar.barStyle = .default
         tabBar.tintColor = .ypBlue
         tabBar.backgroundColor = .ypWhite
-        tabBar.layer.borderWidth = 0.50
-        tabBar.layer.borderColor = UIColor.ypGray.cgColor
-        tabBar.layer.masksToBounds = true
     }
     
     func setupTabBarViewController() {
-        view.backgroundColor = .ypWhite
         
         let trackersVC = TrackersViewController()
         let navViewController = UINavigationController(rootViewController: trackersVC)
@@ -52,6 +50,21 @@ private extension TabBarViewController {
             image: image,
             selectedImage: nil
         )
+    }
+    
+    func setupBorder() {
+        let subview = UIView()
+        subview.backgroundColor = .ypGray
+        subview.translatesAutoresizingMaskIntoConstraints = false
+        
+        tabBar.addSubview(subview)
+        
+        NSLayoutConstraint.activate([
+            subview.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor),
+            subview.trailingAnchor.constraint(equalTo: tabBar.trailingAnchor),
+            subview.topAnchor.constraint(equalTo: tabBar.topAnchor),
+            subview.heightAnchor.constraint(equalToConstant: Resources.Dimensions.dividerHeight)
+        ])
     }
 }
 
