@@ -71,16 +71,6 @@ final class CreateCategoryViewController: UIViewController {
     
     weak var delegate: CreateCategoryViewControllerDelegate?
     
-    // MARK: - Inits
-    
-    //  init() {
-    //    super.init(nibName: nil, bundle: nil)
-    //  }
-    //
-    //  required init?(coder: NSCoder) {
-    //    fatalError("init(coder:) has not been implemented")
-    //  }
-    
     // MARK: - Life circle
     
     override func viewDidLoad() {

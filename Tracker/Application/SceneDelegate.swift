@@ -11,25 +11,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     
-    func scene(
-        _ scene: UIScene,
-        willConnectTo session: UISceneSession,
-        options connectionOptions: UIScene.ConnectionOptions
-    ) {
-        guard let windowScene = (scene as? UIWindowScene) else { return }
-        let window = UIWindow(windowScene: windowScene)
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let scene = (scene as? UIWindowScene) else { return }
+        window = UIWindow(windowScene: scene)
         
-        let viewController = UserDefaults.standard.hasOnboarded
-        ? TabBarViewController()
-        : OnboardingViewController()
-        
-        window.rootViewController = viewController
-        window.makeKeyAndVisible()
-        self.window = window
-    }
-    
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+        if UserDefaults.standard.bool(forKey: "alreadyShown") {
+            let trackers = TabBarViewController()
+            self.window?.rootViewController = trackers
+            window?.makeKeyAndVisible()
+            window?.windowScene = scene
+        } else {
+            let onboarding = OnboardingPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+            self.window?.rootViewController = onboarding
+            window?.makeKeyAndVisible()
+            window?.windowScene = scene
+            UserDefaults.standard.set(true, forKey: "alreadyShown")
+        }
     }
 }
 

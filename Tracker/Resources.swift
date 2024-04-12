@@ -74,8 +74,8 @@ enum Resources {
         static let emptySearch = UIImage(named: "DummySearch")
         static let emptyTrackers = UIImage(named: "DummyTrackers")
         static let emptyStatistic = UIImage(named: "DummyStatistic")
-        static let onboardingPage1 = UIImage(named: "OnboardingBgPage1")
-        static let onboardingPage2 = UIImage(named: "OnboardingBgPage2")
+        static let onboardingPage1 = "OnboardingBgPage1"
+        static let onboardingPage2 = "OnboardingBgPage2"
     }
     
     // MARK: - UI element's dimensions

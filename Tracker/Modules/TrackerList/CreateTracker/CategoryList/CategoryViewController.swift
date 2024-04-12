@@ -16,6 +16,10 @@ protocol CategoryViewControllerDelegate: AnyObject {
 // MARK: - Class
 
 final class CategoryViewController: UIViewController {
+    
+    // MARK: - Public properties
+    weak var delegate: CategoryViewControllerDelegate?
+    
     // MARK: - Private UI properties
     private var titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -46,20 +50,11 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - Private properties
     
-    private let cellID = "CategoryCell"
     private var viewModel = CategoryViewModel()
-    private var selectedCategoryId: UUID?
-    
-    // MARK: - Public properties
-    
-    weak var delegate: CategoryViewControllerDelegate?
-    
-    // MARK: - Inits
-    
     
     init(selectedCategoryId: UUID) {
         super.init(nibName: nil, bundle: nil)
-        self.selectedCategoryId = selectedCategoryId
+        viewModel.selectedCategoryId = selectedCategoryId
     }
     
     required init?(coder: NSCoder) {
@@ -81,7 +76,7 @@ final class CategoryViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(CategoryCell.self, forCellReuseIdentifier: cellID)
+        tableView.register(CategoryCell.self, forCellReuseIdentifier: viewModel.cellID)
         addButton.addTarget(self, action: #selector(addButtonClicked), for: .touchUpInside)
     }
 }
@@ -129,7 +124,8 @@ extension CategoryViewController: CreateCategoryViewControllerDelegate {
 extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        selectedCategoryId = viewModel.categories[indexPath.row].id
+        let uuid = viewModel.categories[indexPath.row].id
+        viewModel.selectedCategoryIdInit(selectedCategoryId: uuid)
         delegate?.categoryViewController(self, didSelect: viewModel.categories[indexPath.row])
     }
     
@@ -146,7 +142,7 @@ extension CategoryViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? CategoryCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: viewModel.cellID, for: indexPath) as? CategoryCell else {
             return UITableViewCell()
         }
         let currentCategory = viewModel.categories[indexPath.row]
@@ -155,7 +151,7 @@ extension CategoryViewController: UITableViewDataSource {
                 name: currentCategory.name,
                 isFirst: indexPath.row == 0,
                 isLast: indexPath.row == viewModel.categories.count - 1,
-                isSelected: currentCategory.id == selectedCategoryId
+                isSelected: currentCategory.id == viewModel.selectedCategoryId
             )
         )
         return cell

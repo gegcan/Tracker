@@ -10,7 +10,13 @@ import Foundation
 // MARK: - CategoryViewModel
 
 final class CategoryViewModel {
+    
+    let cellID = "CategoryCell"
+    var selectedCategoryId: UUID?
+    
     var onChange: (() -> Void)?
+    
+
     
     private (set) var categories: [TrackerCategory] = [] {
         didSet {
@@ -31,6 +37,10 @@ final class CategoryViewModel {
     
     func addCategory(_ category: TrackerCategory) {
         try? trackerCategoryStore.addNew(category: category)
+    }
+    
+    func selectedCategoryIdInit(selectedCategoryId: UUID) {
+        self.selectedCategoryId = selectedCategoryId
     }
 }
 
