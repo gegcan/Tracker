@@ -19,8 +19,6 @@
 		2B4C90422BCFCDAC00F56DC2 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 2B4C90442BCFCDAC00F56DC2 /* Localizable.stringsdict */; };
 		2B4C90482BCFCEE800F56DC2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B4C904A2BCFCEE800F56DC2 /* InfoPlist.strings */; };
 		2B4C90532BCFCFA800F56DC2 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4C90522BCFCFA800F56DC2 /* TrackerTests.swift */; };
-		2B4C905B2BCFD05400F56DC2 /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 2B4C905A2BCFD05400F56DC2 /* InlineSnapshotTesting */; };
-		2B4C905D2BCFD05400F56DC2 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 2B4C905C2BCFD05400F56DC2 /* SnapshotTesting */; };
 		2B4F85592BC2CF0C00FF80C3 /* TrackerStoreUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4F85582BC2CF0C00FF80C3 /* TrackerStoreUpdate.swift */; };
 		2B4F855C2BC2CFA500FF80C3 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4F855B2BC2CFA500FF80C3 /* OnboardingViewController.swift */; };
 		2B4F85612BC2D21100FF80C3 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4F85602BC2D21100FF80C3 /* CategoryViewController.swift */; };
@@ -149,8 +147,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B4C905B2BCFD05400F56DC2 /* InlineSnapshotTesting in Frameworks */,
-				2B4C905D2BCFD05400F56DC2 /* SnapshotTesting in Frameworks */,
 				D2D286B1563845BA8A482E46 /* Pods_Tracker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -164,7 +160,6 @@
 				5E26025B183C1B70EE5E407E /* Pods-Tracker.debug.xcconfig */,
 				B7121A59A23E069D321C113A /* Pods-Tracker.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -371,17 +366,13 @@
 				2B8C114D2B89C5F7007F600D /* Sources */,
 				2B8C114E2B89C5F7007F600D /* Frameworks */,
 				2B8C114F2B89C5F7007F600D /* Resources */,
-				61252F925DDE43823FD1DEB7 /* [CP] Embed Pods Frameworks */,
+				A09A80D3A4A85CBE5810D465 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Tracker;
-			packageProductDependencies = (
-				2B4C905A2BCFD05400F56DC2 /* InlineSnapshotTesting */,
-				2B4C905C2BCFD05400F56DC2 /* SnapshotTesting */,
-			);
 			productName = Tracker;
 			productReference = 2B8C11512B89C5F7007F600D /* Tracker.app */;
 			productType = "com.apple.product-type.application";
@@ -416,7 +407,7 @@
 			);
 			mainGroup = 2B8C11482B89C5F7007F600D;
 			packageReferences = (
-				2B4C90592BCFD05400F56DC2 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				8530AC102BE2318400695B5D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			productRefGroup = 2B8C11522B89C5F7007F600D /* Products */;
 			projectDirPath = "";
@@ -473,7 +464,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		61252F925DDE43823FD1DEB7 /* [CP] Embed Pods Frameworks */ = {
+		A09A80D3A4A85CBE5810D465 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -611,6 +602,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 223F5KTN48;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.gegcan.TrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -629,6 +621,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 223F5KTN48;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.gegcan.TrackerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -690,7 +683,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -745,7 +738,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -782,6 +775,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -815,6 +809,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -854,28 +849,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		2B4C90592BCFD05400F56DC2 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+		8530AC102BE2318400695B5D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing.git";
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 1.16.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		2B4C905A2BCFD05400F56DC2 /* InlineSnapshotTesting */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B4C90592BCFD05400F56DC2 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
-			productName = InlineSnapshotTesting;
-		};
-		2B4C905C2BCFD05400F56DC2 /* SnapshotTesting */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B4C90592BCFD05400F56DC2 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
-			productName = SnapshotTesting;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		2BD9567B2BAD34A8003CCD5B /* Tracker.xcdatamodeld */ = {

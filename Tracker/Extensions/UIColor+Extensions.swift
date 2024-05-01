@@ -7,12 +7,6 @@
 
 import UIKit
 
-#if swift(>=5.9)
-// don't need to use UIColor's extension
-
-#elseif swift(>=5.8)
-// use this UIColor's extension:
-
 extension UIColor {
     static var ypBackground: UIColor { UIColor(named: "ypBackground") ?? UIColor.darkGray }
     static var ypBlack: UIColor { UIColor(named: "ypBlack") ?? UIColor.black }
@@ -42,4 +36,3 @@ extension UIColor {
     static var ypSelection17: UIColor { UIColor(named: "ypSelection17") ?? UIColor.green }
     static var ypSelection18: UIColor { UIColor(named: "ypSelection18") ?? UIColor.green }
 }
-#endif
