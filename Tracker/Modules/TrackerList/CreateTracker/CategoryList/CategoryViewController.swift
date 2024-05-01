@@ -16,10 +16,6 @@ protocol CategoryViewControllerDelegate: AnyObject {
 // MARK: - Class
 
 final class CategoryViewController: UIViewController {
-    
-    // MARK: - Public properties
-    weak var delegate: CategoryViewControllerDelegate?
-    
     // MARK: - Private UI properties
     private var titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -50,11 +46,19 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - Private properties
     
+    private let cellID = "CategoryCell"
     private var viewModel = CategoryViewModel()
+    private var selectedCategoryId: UUID?
+    
+    // MARK: - Public properties
+    
+    weak var delegate: CategoryViewControllerDelegate?
+    
+    // MARK: - Inits
     
     init(selectedCategoryId: UUID) {
         super.init(nibName: nil, bundle: nil)
-        viewModel.selectedCategoryId = selectedCategoryId
+        self.selectedCategoryId = selectedCategoryId
     }
     
     required init?(coder: NSCoder) {
@@ -66,7 +70,6 @@ final class CategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
-        view.backgroundColor = .ypWhite
         
         makeEmptyViewForCategories()
         configureUI()
@@ -76,7 +79,7 @@ final class CategoryViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(CategoryCell.self, forCellReuseIdentifier: viewModel.cellID)
+        tableView.register(CategoryCell.self, forCellReuseIdentifier: cellID)
         addButton.addTarget(self, action: #selector(addButtonClicked), for: .touchUpInside)
     }
 }
@@ -99,22 +102,47 @@ private extension CategoryViewController {
     }
     
     @objc func addButtonClicked() {
-        let nextController = CreateCategoryViewController()
+        let nextController = CreateCategoryViewController(category: nil)
         nextController.delegate = self
         present(nextController, animated: true)
+    }
+    
+    func editCategory(indexPath: IndexPath) {
+        let nextController = CreateCategoryViewController(category: viewModel.categories[indexPath.row])
+        nextController.delegate = self
+        present(nextController, animated: true)
+    }
+    
+    func deleteCategory(indexPath: IndexPath) {
+        let category = viewModel.categories[indexPath.row]
+        let isEmpty = category.items.isEmpty
+        let message = isEmpty ? Resources.Labels.confirmCategoryDelete : Resources.Labels.cancelCategoryDelete
+        let actionSheet = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+        if isEmpty {
+            let deleteAction = UIAlertAction(title: Resources.Labels.contextMenuList[2], style: .destructive) { _ in
+                self.viewModel.deleteCategoryBy(id: category.id)
+            }
+            actionSheet.addAction(deleteAction)
+        }
+        let cancelAction = UIAlertAction(title: Resources.Labels.cancel, style: .cancel) { _ in
+            self.dismiss(animated: true)
+        }
+        actionSheet.addAction(cancelAction)
+        present(actionSheet, animated: true, completion: nil)
     }
 }
 
 // MARK: - CreateCategoryViewControllerDelegate
 
 extension CategoryViewController: CreateCategoryViewControllerDelegate {
-    func createCategoryViewController(
-        _ viewController: CreateCategoryViewController,
-        didFilledCategory category: TrackerCategory
-    ) {
+    func createCategoryViewController(_ viewController: CreateCategoryViewController, name: String, id: UUID?) {
         dismiss(animated: true) { [weak self] in
             guard let self else { return }
-            self.viewModel.addCategory(category)
+            if let id {
+                self.viewModel.rename(id: id, newName: name)
+            } else {
+                self.viewModel.addCategory(TrackerCategory(id: UUID(), name: name, items: []))
+            }
         }
     }
 }
@@ -124,13 +152,32 @@ extension CategoryViewController: CreateCategoryViewControllerDelegate {
 extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        let uuid = viewModel.categories[indexPath.row].id
-        viewModel.selectedCategoryIdInit(selectedCategoryId: uuid)
+        selectedCategoryId = viewModel.categories[indexPath.row].id
         delegate?.categoryViewController(self, didSelect: viewModel.categories[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return viewModel.categories.isEmpty ? .zero : Resources.Dimensions.fieldHeight
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        contextMenuConfigurationForRowAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let editAction = UIAction(
+                title: Resources.Labels.contextMenuList[1], image: Resources.SfSymbols.editElement
+            ) { [weak self] _ in
+                self?.editCategory(indexPath: indexPath)
+            }
+            let deleteAction = UIAction(
+                title: Resources.Labels.contextMenuList[2], image: Resources.SfSymbols.deleteElement, attributes: .destructive
+            ) { [weak self] _ in
+                self?.deleteCategory(indexPath: indexPath)
+            }
+            return UIMenu(title: "", children: [editAction, deleteAction])
+        }
     }
 }
 
@@ -142,7 +189,7 @@ extension CategoryViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: viewModel.cellID, for: indexPath) as? CategoryCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as? CategoryCell else {
             return UITableViewCell()
         }
         let currentCategory = viewModel.categories[indexPath.row]
@@ -151,7 +198,7 @@ extension CategoryViewController: UITableViewDataSource {
                 name: currentCategory.name,
                 isFirst: indexPath.row == 0,
                 isLast: indexPath.row == viewModel.categories.count - 1,
-                isSelected: currentCategory.id == viewModel.selectedCategoryId
+                isSelected: currentCategory.id == selectedCategoryId
             )
         )
         return cell
@@ -162,6 +209,7 @@ extension CategoryViewController: UITableViewDataSource {
 
 private extension CategoryViewController {
     func configureUI() {
+        view.backgroundColor = .ypWhite
         view.addSubview(titleLabel)
         view.addSubview(emptyView)
         view.addSubview(tableView)
