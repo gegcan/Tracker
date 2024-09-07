@@ -49,4 +49,4 @@ Tracker - приложение, которое помогает пользова
 `Xcode`, `Figma`
 
 ### Список создателей
-[Александр Гегешидзе]((https://github.com/gegcan)
+[Александр Гегешидзе](https://github.com/gegcan)
