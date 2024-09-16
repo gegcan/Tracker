@@ -10,6 +10,7 @@
         <attribute name="emoji" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="friday" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isPinned" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="monday" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="saturday" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="sunday" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
